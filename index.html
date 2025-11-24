@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AHDIIKHF_ // PORTFOLIO</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="./style/style.css">
+
+  </head>
+  <body class="min-h-screen relative">
+    <!-- Background Elements -->
+    <div
+      class="fixed inset-0 bg-noise pointer-events-none z-50 opacity-40 mix-blend-overlay"
+    ></div>
+    <div
+      id="ambient-light"
+      class="fixed top-0 left-0 w-[600px] h-[600px] rounded-full mix-blend-screen filter blur-[150px] opacity-10 -translate-x-1/2 -translate-y-1/2 animate-pulse pointer-events-none transition-colors duration-700"
+      style="background: var(--primary)"
+    ></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 px-6 py-4">
+      <div
+        id="nav-container"
+        class="max-w-7xl mx-auto glass-card rounded-full px-6 py-3 flex justify-between items-center bg-black/80"
+      >
+        <div
+          class="font-display font-bold text-xl tracking-tighter cursor-pointer flex items-center gap-2"
+          onclick="scrollToSection('home')"
+        >
+          <span>Ahdiikhf_</span
+          ><span id="brand-dot" style="color: var(--primary)"></span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div
+          class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest"
+        >
+          <button
+            onclick="scrollToSection('home')"
+            class="nav-link transition-colors hover:text-opacity-100 opacity-70 hover:text-white"
+          >
+            Home
+          </button>
+          <button
+            onclick="scrollToSection('about')"
+            class="nav-link transition-colors hover:text-opacity-100 opacity-70 hover:text-white"
+          >
+            About
+          </button>
+          <button
+            onclick="scrollToSection('project')"
+            class="nav-link transition-colors hover:text-opacity-100 opacity-70 hover:text-white"
+          >
+            project
+          </button>
+          <button
+            onclick="scrollToSection('contact')"
+            class="nav-link transition-colors hover:text-opacity-100 opacity-70 hover:text-white"
+          >
+            Contact
+          </button>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-4">
+          <button
+            onclick="togglePalettePicker()"
+            class="p-2 rounded-full transition-colors hover:bg-white/10 text-gray-400"
+          >
+            <i data-lucide="palette" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Palette Picker Modal -->
+    <div
+      id="palette-picker"
+      class="fixed top-20 right-6 z-50 glass-card p-4 rounded-2xl animate-slide-in-right w-64 hidden"
+    >
+      <div
+        class="flex justify-between items-center mb-4 pb-2 border-b border-white/10"
+      >
+        <h4
+          class="text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+        >
+          <i data-lucide="sliders" class="w-3 h-3"></i> System Chroma
+        </h4>
+        <button onclick="togglePalettePicker()">
+          <i data-lucide="x" class="w-3 h-3 text-gray-500 hover:text-white"></i>
+        </button>
+      </div>
+      <div class="space-y-2" id="palette-list">
+        <!-- Palettes injected by JS -->
+      </div>
+    </div>
+
+    <!-- Command Palette Modal -->
+    <div
+      id="cmd-palette"
+      class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-[15vh] animate-fade-in hidden"
+    >
+      <div
+        class="w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10 bg-black"
+      >
+        <div
+          class="p-4 border-b border-white/10 bg-black flex items-center gap-3"
+        >
+          <i
+            data-lucide="search"
+            class="w-4 h-4"
+            style="color: var(--primary)"
+          ></i>
+          <input
+            id="cmd-input"
+            type="text"
+            placeholder="Ketik 'About' atau 'Contact'..."
+            class="flex-1 bg-transparent outline-none font-mono text-sm text-white placeholder:text-gray-500"
+            autofocus
+          />
+          <div
+            class="px-2 py-1 rounded text-[10px] border font-mono bg-white/5 border-white/10 text-gray-500"
+          >
+            ESC
+          </div>
+        </div>
+        <div id="cmd-results" class="p-2 bg-black">
+          <!-- Results injected by JS -->
+        </div>
+      </div>
+      <div class="absolute inset-0 -z-10" onclick="toggleCmdPalette()"></div>
+    </div>
+
+    <!-- MAIN STATIC CONTENT -->
+    <main
+      id="app-root"
+      class="flex-grow relative overflow-hidden pt-0 min-h-[85vh]"
+    >
+      <!-- HERO SECTION -->
+      <section
+        id="home"
+        class="min-h-screen flex flex-col justify-center container mx-auto px-6 pt-20 relative z-10 animate-fade-in"
+      >
+        <div class="max-w-5xl relative">
+          <div
+            class="inline-block border px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wider mb-6 shadow-lg bg-black"
+            style="border-color: var(--primary); color: var(--primary)"
+          >
+            Creative Developer
+          </div>
+          <h1
+            class="text-6xl md:text-9xl font-display font-black leading-[0.9] mb-8"
+          >
+            AHDI <br />
+            <span class="text-outline md:ml-32">KHALIDA</span> <br />
+            <span
+              class="bg-clip-text md:ml-72 text-transparent bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"
+              >FATHIR.</span
+            >
+          </h1>
+          <p
+            class="text-xl max-w-2xl leading-relaxed mb-12 font-light text-secondary"
+          >
+            Halo, saya Ahdi. Website ini saya buat sebagai tempat untuk
+            menampilkan proyek, pengalaman, dan hal-hal yang sedang saya
+            kerjakan.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button
+              onclick="scrollToSection('project')"
+              class="group relative px-8 py-4 border font-bold overflow-hidden rounded-none skew-x-[-10deg] transition-transform hover:skew-x-0 bg-black text-white"
+              style="
+                border-color: var(--primary);
+                box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
+              "
+            >
+              <span class="relative z-10 flex items-center gap-2 text-current"
+                >LIHAT PROJEK <i data-lucide="arrow-right" class="w-4 h-4"></i
+              ></span>
+              <div
+                class="absolute inset-0 bg-[var(--primary)] opacity-10"
+              ></div>
+            </button>
+            <button
+              onclick="toggleCmdPalette()"
+              class="px-8 py-4 border font-bold transition-colors skew-x-[-10deg] flex items-center gap-2 hover:bg-white/10"
+              style="border-color: var(--border-color)"
+            >
+              <i
+                data-lucide="command"
+                class="w-4 h-4"
+                style="color: var(--secondary)"
+              ></i>
+              CMD+K
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TECH STACK / TOOLS -->
+      <div
+        class="w-full border-y py-12 overflow-hidden bg-black"
+        style="border-color: var(--border-color)"
+      >
+        <div class="container mx-auto px-6">
+          <p
+            class="text-center text-xs font-mono uppercase tracking-[0.3em] mb-8 text-secondary"
+          >
+            Tech Stack & Tools
+          </p>
+          <div
+            class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-500"
+          >
+            <span class="text-xl font-display font-bold flex items-center gap-2"
+              ><i data-lucide="code-2" style="color: var(--primary)"></i>
+              LARAVEL</span
+            >
+            <span class="text-xl font-display font-bold flex items-center gap-2"
+              ><i data-lucide="cpu" style="color: var(--secondary)"></i>
+              REACT</span
+            >
+            <span class="text-xl font-display font-bold flex items-center gap-2"
+              ><i data-lucide="layers" style="color: var(--primary)"></i>
+              TAILWIND</span
+            >
+            <span class="text-xl font-display font-bold flex items-center gap-2"
+              ><i data-lucide="database" style="color: var(--secondary)"></i>
+              SQL</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: ABOUT / PROFILE -->
+      <section id="about" class="container mx-auto px-6 py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-4 mb-12">
+              <span
+                class="text-xs font-mono border px-2 py-1 rounded"
+                style="
+                  color: var(--primary);
+                  border-color: var(--primary);
+                  background: rgba(0, 0, 0, 0.1);
+                "
+                >01</span
+              >
+              <h2
+                class="text-3xl md:text-4xl font-display font-bold tracking-tighter"
+              >
+                About Me
+              </h2>
+              <div
+                class="h-px flex-1 ml-4"
+                style="background: var(--border-color)"
+              ></div>
+            </div>
+            <div class="mb-10">
+              <div class="glass-card rounded-xl overflow-hidden group">
+                <div
+                  class="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-black/40"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                      <div
+                        class="w-2.5 h-2.5 rounded-full"
+                        style="background: var(--primary)"
+                      ></div>
+                      <div
+                        class="w-2.5 h-2.5 rounded-full"
+                        style="background: var(--secondary)"
+                      ></div>
+                    </div>
+                    <span class="text-xs font-mono ml-2 text-gray-500"
+                      >profile.json</span
+                    >
+                  </div>
+                </div>
+                <div class="p-4 overflow-x-auto bg-black">
+                  <pre
+                    class="text-xs md:text-sm font-mono leading-relaxed text-gray-400"
+                  ><code>{
+            <span style="color: var(--primary);">"username"</span>: <span style="color: var(--secondary);">"@ahdiikhf_"</span>,
+            <span style="color: var(--primary);">"location"</span>: <span style="color: var(--secondary);">"Indonesia"</span>,
+            <span style="color: var(--primary);">"status"</span>: <span style="color: var(--secondary);">"Available for Freelance"</span>,
+            <span style="color: var(--primary);">"hobbies"</span>: [
+                <span style="color: var(--secondary);">"Coding"</span>, 
+                <span style="color: var(--secondary);">"Coffee"</span>, 
+                <span style="color: var(--secondary);">"Gaming"</span>
+            ],
+            <span style="color: var(--primary);">"skills"</span>: {
+                <span style="color: var(--primary);">"frontend"</span>: [<span style="color: var(--secondary);">"React"</span>],
+                <span style="color: var(--primary);">"backend"</span>: [ <span style="color: var(--secondary);">"Laravel"</span>, <span style="color: var(--secondary);">"MySQL"</span>]
+            },
+            <span style="color: var(--primary);">"education"</span>: [
+            {
+                <span style="color: var(--primary);">"school"</span>: <span style="color: var(--secondary);">"SMK Amaliah 1"</span>,
+                <span style="color: var(--primary);">"major"</span>: <span style="color: var(--secondary);">"Rekayasa Perangkat Lunak"</span>
+            },
+            {
+                <span style="color: var(--primary);">"school"</span>: <span style="color: var(--secondary);">"IPB University"</span>,
+                <span style="color: var(--primary);">"major"</span>: <span style="color: var(--secondary);">"Teknologi Rekayasa Komputer"</span>
+            }
+        ]
+
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-5 space-y-8 mt-24">
+            <div class="glass-card p-8 rounded-2xl">
+              <h3 class="font-display font-bold mb-6 flex items-center gap-2">
+                <i
+                  data-lucide="activity"
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                ></i>
+                Current Status
+              </h3>
+              <div class="space-y-4 font-mono text-sm">
+                <div
+                  class="flex justify-between items-center pb-4 border-b border-white/10"
+                >
+                  <span class="text-gray-500">Focus</span
+                  ><span>Web Development</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-500">Availability</span
+                  ><span style="color: var(--secondary)">Open</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: project -->
+      <section
+        id="project"
+        class="container mx-auto px-6 py-24 border-t border-white/5"
+      >
+        <div class="flex items-center gap-4 mb-16">
+          <span
+            class="text-xs font-mono border px-2 py-1 rounded"
+            style="
+              color: var(--primary);
+              border-color: rgba(255, 255, 255, 0.1);
+              background: rgba(0, 0, 0, 0.1);
+            "
+            >02</span
+          >
+          <h2
+            class="text-3xl md:text-4xl font-display font-bold tracking-tighter"
+          >
+            Selected Works
+          </h2>
+          <div
+            class="h-px flex-1 ml-4"
+            style="background: var(--border-color)"
+          ></div>
+        </div>
+
+        <!-- Project 1 -->
+        <div class="group cursor-pointer mb-24">
+          <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="w-full md:w-5/12">
+              <div class="flex items-center gap-2 mb-6">
+                <div
+                  class="px-3 py-1 border text-[10px] font-bold uppercase tracking-widest rounded-full bg-white/5 border-white/20"
+                >
+                  E-Commerce
+                </div>
+              </div>
+              <h3
+                class="text-4xl font-display font-bold mb-4 group-hover:text-[var(--primary)] transition-colors"
+              >
+                TokoOnline
+              </h3>
+              <p class="mb-8 text-lg font-light leading-relaxed text-secondary">
+                Platform belanja modern dengan integrasi payment gateway.
+              </p>
+              <div
+                class="border rounded-xl p-6 mb-8 grid grid-cols-3 gap-4 border-white/10 bg-black/50"
+              >
+                <div>
+                  <div
+                    class="text-[10px] uppercase tracking-wider font-mono mb-1 text-gray-500"
+                  >
+                    Stack
+                  </div>
+                  <div class="font-mono" style="color: var(--primary)">
+                    Laravel
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[10px] uppercase tracking-wider font-mono mb-1 text-gray-500"
+                  >
+                   View
+                  </div>
+                   <a href="https://github.com/Thirty21" target="_blank">
+                  <div class="font-mono group absolute px-2 py-2 border font-bold overflow-hidden rounded-none skew-x-[-10deg] transition-transform hover:skew-x-0 bg-black text-white" style="color: var(--secondary); border-color: var(--primary);
+                box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);">
+                    Github 
+                  </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              class="w-full md:w-7/12 relative h-[400px] overflow-hidden rounded-3xl p-2 border border-white/10 bg-black"
+            >
+              <div
+                class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 rounded-3xl mix-blend-overlay bg-gradient-to-tr from-[var(--primary)] to-[var(--secondary)]"
+              ></div>
+              <img
+                src="./images/project1.png"
+                class="w-full h-full object-cover rounded-2xl transition-all duration-700 scale-100 group-hover:scale-105  group-hover:grayscale"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="group cursor-pointer mb-24">
+          <div
+            class="flex flex-col md:flex-row gap-12 items-center md:flex-row-reverse"
+          >
+            <div class="w-full md:w-5/12">
+              <div class="flex items-center gap-2 mb-6">
+                <div
+                  class="px-3 py-1 border text-[10px] font-bold uppercase tracking-widest rounded-full bg-white/5 border-white/20"
+                >
+                  Dashboard
+                </div>
+              </div>
+              <h3
+                class="text-4xl font-display font-bold mb-4 group-hover:text-[var(--primary)] transition-colors"
+              >
+                Aplikasi Layanan
+              </h3>
+              <p class="mb-8 text-lg font-light leading-relaxed text-secondary">
+                Sistem manajemen data real-time untuk analitik bisnis.
+              </p>
+              <div
+                class="border rounded-xl p-6 mb-8 grid grid-cols-3 gap-4 border-white/10 bg-black/50"
+              >
+                <div>
+                  <div
+                    class="text-[10px] uppercase tracking-wider font-mono mb-1 text-gray-500"
+                  >
+                    Stack
+                  </div>
+                  <div class="font-mono font-bold" style="color: var(--primary)">
+                    React
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="text-[10px] uppercase tracking-wider font-mono mb-1 text-gray-500"
+                  >
+                   View
+                  </div>
+                  <a href="https://github.com/Thirty21" target="_blank">
+                  <div class="font-mono group absolute px-2 py-2 border font-bold overflow-hidden rounded-none skew-x-[-10deg] transition-transform hover:skew-x-0 bg-black text-white" style="color: var(--secondary); border-color: var(--primary);
+                box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);">
+                    Github 
+                  </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              class="w-full md:w-7/12 relative h-[400px] overflow-hidden rounded-3xl p-2 border border-white/10 bg-black"
+            >
+              <div
+                class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 rounded-3xl mix-blend-overlay bg-gradient-to-tr from-[var(--primary)] to-[var(--secondary)]"
+              ></div>
+              <img
+                src="./images/project2.jpeg"
+                class="w-full h-full object-cover rounded-2xl transition-all duration-700 scale-100 group-hover:scale-105 grayscale group-hover:grayscale-0"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: CONTACT -->
+      <section
+        id="contact"
+        class="container mx-auto px-6 py-24 pb-32 border-t border-white/5"
+      >
+        <div class="flex items-center gap-4 mb-12">
+          <span
+            class="text-xs font-mono border px-2 py-1 rounded"
+            style="
+              color: var(--primary);
+              border-color: var(--primary);
+              background: rgba(0, 0, 0, 0.1);
+            "
+            >03</span
+          >
+          <h2
+            class="text-3xl md:text-4xl font-display font-bold tracking-tighter"
+          >
+            Let's Talk
+          </h2>
+          <div
+            class="h-px flex-1 ml-4"
+            style="background: var(--border-color)"
+          ></div>
+        </div>
+        <div
+          class="max-w-3xl mx-auto glass-card p-10 rounded-3xl relative overflow-hidden"
+        >
+          <div class="relative z-10">
+            <h3 class="text-3xl font-display font-bold mb-2">
+              Mulai Projek Baru?
+            </h3>
+            <p class="mb-10 text-secondary">
+              Hubungi saya untuk kolaborasi atau sekedar menyapa.
+            </p>
+            <form
+              class="space-y-8"
+              action="https://formsubmit.co/ahdikhalida@gmail.com"
+              method="POST"
+            >
+              <!-- Matikan captcha -->
+              <input type="hidden" name="_captcha" value="false" />
+
+              <!-- Redirect setelah kirim -->
+              <input
+                type="hidden"
+                name="_next"
+                value="https://portofolio-ochre-xi.vercel.app/"
+              />
+
+              <!-- Template email biar lebih rapi -->
+              <input type="hidden" name="_template" value="box" />
+
+              <!-- Isi form kamu di bawah ini -->
+              <div class="grid grid-cols-2 gap-8">
+                <div class="space-y-2">
+                  <label
+                    class="text-xs uppercase tracking-wider font-bold"
+                    style="color: var(--primary)"
+                    >Nama</label
+                  >
+                  <input
+                    type="text"
+                    name="name"
+                    class="w-full border rounded-lg p-4 focus:outline-none transition-colors bg-black/40 border-white/10 text-white"
+                    placeholder="Nama Kamu"
+                    required
+                  />
+                </div>
+
+                <div class="space-y-2">
+                  <label
+                    class="text-xs uppercase tracking-wider font-bold"
+                    style="color: var(--secondary)"
+                    >Email</label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    class="w-full border rounded-lg p-4 focus:outline-none transition-colors bg-black/40 border-white/10 text-white"
+                    placeholder="emailkamu@gmail.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs uppercase tracking-wider font-bold"
+                  >Pesan</label
+                >
+                <textarea
+                  name="message"
+                  class="w-full border rounded-lg p-4 focus:outline-none transition-colors h-32 resize-none bg-black/40 border-white/10 text-white"
+                  placeholder="Ceritakan tentang idemu..."
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                class="w-full py-4 font-black text-lg rounded-lg transition-colors border hover:bg-[var(--primary)] hover:text-black"
+                style="
+                  border-color: var(--primary);
+                  background: transparent;
+                  color: inherit;
+                "
+              >
+                KIRIM PESAN
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      id="main-footer"
+      class="border-t pt-24 pb-12 rounded-t-[3rem] mt-12 mx-4 glass-card border-white/10"
+    >
+      <div class="container mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
+          <div class="col-span-1 md:col-span-2">
+            <div
+              class="flex items-center gap-2 mb-8 font-display font-bold text-3xl"
+            >
+              AHDIIKHF_<span style="color: var(--primary)">.</span>
+            </div>
+            <p
+              class="leading-relaxed max-w-sm mb-8 font-light text-lg text-secondary"
+            >
+              Membangun solusi digital masa depan. Sistem yang kuat, desain yang
+              elegan, dan kode yang bersih.
+            </p>
+            <div class="flex gap-6">
+              <a
+                href="https://github.com/Thirty21"
+                target="_blank"
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-all border bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                ><i data-lucide="github" class="w-5 h-5"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/ahdiikhf_/"
+                target="_blank"
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-all border bg-white/5 border-white/10 text-gray-400 hover:text-white"
+                ><i data-lucide="instagram" class="w-5 h-5"></i
+              ></a>
+            </div>
+          </div>
+          <div>
+            <h4
+              class="font-bold mb-8 uppercase tracking-widest text-xs border-b inline-block pb-2"
+              style="border-color: var(--primary)"
+            >
+              Menu
+            </h4>
+            <ul class="space-y-4 text-sm font-mono text-secondary">
+              <li>
+                <button
+                  onclick="scrollToSection('home')"
+                  class="hover:text-white transition-colors"
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="scrollToSection('about')"
+                  class="hover:text-white transition-colors"
+                >
+                  About
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="scrollToSection('project')"
+                  class="hover:text-white transition-colors"
+                >
+                  project
+                </button>
+              </li>
+              <li>
+                <button
+                  onclick="scrollToSection('contact')"
+                  class="hover:text-white transition-colors"
+                >
+                  Contact
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono uppercase tracking-widest border-white/10 text-gray-500"
+        >
+          <div>&copy; 2025 Ahdiikhf_. All rights reserved.</div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-2 h-2 rounded-full animate-pulse"
+              style="background: var(--primary)"
+            ></div>
+            SYSTEM ONLINE
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>
